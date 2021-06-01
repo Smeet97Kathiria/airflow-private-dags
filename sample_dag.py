@@ -24,6 +24,6 @@ with DAG(dag_id='list_dag', schedule_interval='0 0 * * *', default_args=default_
 
     task_5 = BashOperator(task_id='task_5', bash_command='echo "pipeline done"')
 
-    task_6 = BashOperator(task_id='task_6', bash_command='aws s3 ls https://s3.console.aws.amazon.com/s3/buckets/ryft-public-sample-data/?region=us-east-1&tab=objects')
+    task_6 = BashOperator(task_id='task_6', bash_command='aws s3 ls ryft-public-sample-data')
 
     tasks >> task_4 >> task_5 >> task_6
