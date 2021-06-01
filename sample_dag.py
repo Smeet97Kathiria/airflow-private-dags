@@ -24,6 +24,6 @@ with DAG(dag_id='list_dag', schedule_interval='0 0 * * *', default_args=default_
 
     task_5 = BashOperator(task_id='task_5', bash_command='echo "pipeline done"')
 
-    task_6 = BashOperator(task_id='task_6', bash_command='aws s3 ls airflow-logs-eks')
+    task_6 = BashOperator(task_id='task_6', bash_command='aws s3 ls s3://airflow-logs-eks/')
 
     tasks >> task_4 >> task_5 >> task_6
