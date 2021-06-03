@@ -54,7 +54,8 @@ default_args = {
 EMR_CLUSTER_ID = 's-PV2C0SV5NEXG'
 INPUT_DATA_CSV = 's3://wcd-data-engineering-pipeline/source/banking.csv'
 OUTPUT_DIRECTORY = 's3://wcd-data-engineering-pipeline/output'
-ARTIFACT_JAR = 's3://wcd-data-engineering-pipeline/spark-engine_2.11-0.0.1.jar’
+ARTIFACT_JAR = 's3://wcd-data-engineering-pipeline/spark-engine_2.11-0.0.1.jar'
+
 
 # TODO think of solution (and function) to dynamically calculate amount of resources
 # (e.g. num-executors, executor-memory, executor-cores, etc.) to allocate to
