@@ -23,10 +23,16 @@ def retrieve_s3_file(**kwargs):
     s3_location = kwargs['dag_run'].conf['s3_location']
     
     file_ext = path.splitext(s3_location)[-1].lstrip('.').capitalize()
+    if file_ext == 'Csv':
+        column = 'job'
+    else:
+        column = 'state' 
     # file_ext = 
     print(f"Data engineering pipeline logging...S3 location: {s3_location}")
     kwargs['ti'].xcom_push(key='s3_location', value=s3_location)
     kwargs['ti'].xcom_push(key='file_ext', value=file_ext)
+    kwargs['ti'].xcom_push(key='column', value=column)
+
 
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
@@ -87,8 +93,8 @@ SPARK_STEPS = [
                 #'-s', INPUT_DATA_CSV,
                 '-s', "{{ task_instance.xcom_pull(task_ids='parse_request', key='s3_location') }}",
                 '-d', OUTPUT_DIRECTORY,
-                '-c', 'state', # partition column
-                '-m', 'append',
+                '-c', "{{ task_instance.xcom_pull(task_ids='parse_request', key='column') }}",
+                '-m', 'overwrite',
                 '--input-options', 'header=true'
                 ]
         }
