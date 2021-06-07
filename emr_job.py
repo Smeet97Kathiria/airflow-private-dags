@@ -85,7 +85,7 @@ SPARK_STEPS = [
                 #'-s', INPUT_DATA_CSV,
                 '-s', "{{ task_instance.xcom_pull(task_ids='parse_request', key='s3_location') }}",
                 '-d', OUTPUT_DIRECTORY,
-                '-c', 'job', # partition column
+                '-c', 'state', # partition column
                 '-m', 'append',
                 '--input-options', 'header=true'
                 ]
