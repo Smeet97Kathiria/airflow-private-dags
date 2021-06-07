@@ -24,6 +24,7 @@ def retrieve_s3_file(**kwargs):
     # file_ext = 
     print(f"Data engineering pipeline logging...S3 location: {s3_location}")
     kwargs['ti'].xcom_push(key='s3_location', value=s3_location)
+    kwargs['ti'].xcom_push(key='file_ext', value=file_ext)
 
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
@@ -77,7 +78,8 @@ SPARK_STEPS = [
                 '--executor-cores', '1',
                 ARTIFACT_JAR, # artifact
                 '-p', 'wcd-demo',
-                '-i', 'Csv', # should have a function to dynamically set this parameter based on file extension
+               
+                '-i', "{{ task_instance.xcom_pull(task_ids='parse_request', key='file_ext') }}",  # should have a function to dynamically set this parameter based on file extension
                 '-o', 'parquet',
                 # TODO: change this to parse s3 location with incoming event that triggers Lambda function 
                 #'-s', INPUT_DATA_CSV,
