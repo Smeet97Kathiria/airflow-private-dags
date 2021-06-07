@@ -21,6 +21,7 @@ from airflow.contrib.sensors.emr_step_sensor import EmrStepSensor
 # helper functions
 def retrieve_s3_file(**kwargs):
     s3_location = kwargs['dag_run'].conf['s3_location']
+    file_ext = path.splitext(s3_location)[-1].lstrip('.').capitalize()
     # file_ext = 
     print(f"Data engineering pipeline logging...S3 location: {s3_location}")
     kwargs['ti'].xcom_push(key='s3_location', value=s3_location)
