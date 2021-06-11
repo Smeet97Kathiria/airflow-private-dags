@@ -24,14 +24,18 @@ def retrieve_s3_file(**kwargs):
     
     file_ext = path.splitext(s3_location)[-1].lstrip('.').capitalize()
     if file_ext == 'Csv':
+        output_folder = 'csv'
         column = 'job'
     else:
+        output_folder = 'json'
         column = 'state' 
     # file_ext = 
     print(f"Data engineering pipeline logging...S3 location: {s3_location}")
     kwargs['ti'].xcom_push(key='s3_location', value=s3_location)
     kwargs['ti'].xcom_push(key='file_ext', value=file_ext)
     kwargs['ti'].xcom_push(key='column', value=column)
+    kwargs['ti'].xcom_push(key='output_folder', value=output_folder)
+
 
 
 # These args will get passed on to each operator
@@ -92,7 +96,7 @@ SPARK_STEPS = [
                 # TODO: change this to parse s3 location with incoming event that triggers Lambda function 
                 #'-s', INPUT_DATA_CSV,
                 '-s', "{{ task_instance.xcom_pull(task_ids='parse_request', key='s3_location') }}",
-                '-d', OUTPUT_DIRECTORY,
+                '-d', path.join(OUTPUT_DIRECTORY, "{{ task_instance.xcom_pull(task_ids='parse_request', key='output_folder') }}"),
                 '-c', "{{ task_instance.xcom_pull(task_ids='parse_request', key='column') }}",
                 '-m', 'overwrite',
                 '--input-options', 'header=true'
