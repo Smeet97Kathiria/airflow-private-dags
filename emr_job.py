@@ -64,7 +64,7 @@ default_args = {
     # 'trigger_rule': 'all_success'
 }
 
-EMR_CLUSTER_ID = 'j-3689DCDPZUI9V'
+EMR_CLUSTER_ID = 'j-36YEU1UJVIIEI'
 INPUT_DATA_CSV = 's3://wcd-data-engineering-pipeline/source/banking.csv'
 OUTPUT_DIRECTORY = 's3://wcd-data-engineering-pipeline/output'
 ARTIFACT_JAR = 's3://wcd-data-engineering-pipeline/spark-engine_2.11-0.0.1.jar'
